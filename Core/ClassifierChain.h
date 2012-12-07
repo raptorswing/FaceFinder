@@ -86,6 +86,11 @@ public:
                   qreal scale);
 
 private:
+    ClassifierChain(const ClassifierChain& other);
+
+    ClassifierChain& operator =(const ClassifierChain& other);
+
+    //Member Variables
     QList<Classifier *> _classifiers;
 };
 

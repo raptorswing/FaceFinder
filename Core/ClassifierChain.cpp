@@ -113,3 +113,16 @@ bool ClassifierChain::classify(const IntegralImage &image,
 
     return true;
 }
+
+//private to prevent inadvertent use
+ClassifierChain::ClassifierChain(const ClassifierChain &other)
+{
+    Q_UNUSED(other)
+}
+
+//private to prevent inadvertent use
+ClassifierChain &ClassifierChain::operator =(const ClassifierChain &other)
+{
+    Q_UNUSED(other)
+    return *this;
+}
