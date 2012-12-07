@@ -2,5 +2,7 @@
     <qresource prefix="/testImages">
         <file>images/01.png</file>
         <file>images/02.png</file>
+        <file>images/averageFemaleFace24x24.png</file>
+        <file>images/averageMaleFace24x24.png</file>
     </qresource>
 </RCC>

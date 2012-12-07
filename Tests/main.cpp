@@ -3,6 +3,7 @@
 #include <QtDebug>
 
 #include "tst_IntegralImageTest.h"
+#include "tst_ClassifierChainTest.h"
 
 int main(int argc, char** argv)
 {
@@ -11,6 +12,11 @@ int main(int argc, char** argv)
 
     {
         IntegralImageTest test;
+        QTest::qExec(&test);
+    }
+
+    {
+        ClassifierChainTest test;
         QTest::qExec(&test);
     }
 
