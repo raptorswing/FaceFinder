@@ -10,9 +10,13 @@ TARGET = Core
 TEMPLATE = lib
 CONFIG += staticlib
 
-SOURCES += IntegralImage.cpp
+SOURCES += IntegralImage.cpp \
+    ClassifierChain.cpp \
+    Classifier.cpp
 
-HEADERS += IntegralImage.h
+HEADERS += IntegralImage.h \
+    ClassifierChain.h \
+    Classifier.h
 unix:!symbian {
     maemo5 {
         target.path = /opt/usr/lib
