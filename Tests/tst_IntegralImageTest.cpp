@@ -1,27 +1,10 @@
+#include "tst_IntegralImageTest.h"
+
 #include <QString>
 #include <QtTest>
-
 #include <QtDebug>
 
 #include "IntegralImage.h"
-
-class IntegralImageTest : public QObject
-{
-    Q_OBJECT
-    
-public:
-    IntegralImageTest();
-    
-private Q_SLOTS:
-    void testSumAtPixel1();
-    void testSumAtPixel2();
-
-    void testSumInArea1();
-    void testSumInArea2();
-
-    void testCopyConstructor();
-    void testAssignmentOperator();
-};
 
 IntegralImageTest::IntegralImageTest()
 {
@@ -140,7 +123,3 @@ void IntegralImageTest::testAssignmentOperator()
     QVERIFY(good);
     delete test;
 }
-
-QTEST_APPLESS_MAIN(IntegralImageTest)
-
-#include "tst_IntegralImageTest.moc"

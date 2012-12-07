@@ -15,7 +15,8 @@ CONFIG   -= app_bundle
 TEMPLATE = app
 
 
-SOURCES += tst_IntegralImageTest.cpp
+SOURCES += tst_IntegralImageTest.cpp \
+    main.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 
@@ -33,3 +34,6 @@ else:unix: PRE_TARGETDEPS += $$OUT_PWD/../Core/libCore.a
 
 RESOURCES += \
     TestResources.qrc
+
+HEADERS += \
+    tst_IntegralImageTest.h
