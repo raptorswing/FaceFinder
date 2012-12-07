@@ -22,8 +22,8 @@ IntegralImage::IntegralImage(const IntegralImage &other) : _isNull(true), _bins(
         _isNull = false;
         _width = other.width();
         _height = other.height();
-        _bins = new quint64[_width * _height];
-        memcpy(_bins, other._bins,_width * _height * sizeof(quint64));
+        _bins = new qint64[_width * _height];
+        memcpy(_bins, other._bins,_width * _height * sizeof(qint64));
     }
 }
 
@@ -53,8 +53,8 @@ IntegralImage &IntegralImage::operator =(const IntegralImage &other)
 
     if (!this->isNull())
     {
-        _bins = new quint64[_width * _height];
-        memcpy(_bins, other._bins, _width * _height * sizeof(quint64));
+        _bins = new qint64[_width * _height];
+        memcpy(_bins, other._bins, _width * _height * sizeof(qint64));
     }
 
     return *this;
@@ -92,12 +92,12 @@ bool IntegralImage::isNull() const
     return _isNull;
 }
 
-quint64 IntegralImage::sumAtPixel(const QPoint &pos) const
+qint64 IntegralImage::sumAtPixel(const QPoint &pos) const
 {
     return this->sumAtPixel(pos.x(), pos.y());
 }
 
-quint64 IntegralImage::sumAtPixel(int x, int y) const
+qint64 IntegralImage::sumAtPixel(int x, int y) const
 {
     if (x < 0 || y < 0 || x >= _width || y >= _height)
     {
@@ -107,7 +107,7 @@ quint64 IntegralImage::sumAtPixel(int x, int y) const
     return _bins[x + y * _width];
 }
 
-quint64 IntegralImage::sumInArea(const QRect &rect) const
+qint64 IntegralImage::sumInArea(const QRect &rect) const
 {
     return this->sumInArea(rect.left(),
                            rect.top(),
@@ -115,12 +115,12 @@ quint64 IntegralImage::sumInArea(const QRect &rect) const
                            rect.height());
 }
 
-quint64 IntegralImage::sumInArea(int x, int y, int width, int height) const
+qint64 IntegralImage::sumInArea(int x, int y, int width, int height) const
 {
-    const quint64 bottomRight = this->sumAtPixel(x + width, y + height);
-    const quint64 topLeft = this->sumAtPixel(x, y);
-    const quint64 bottomLeft = this->sumAtPixel(x, y + height);
-    const quint64 topRight = this->sumAtPixel(x + width, y);
+    const qint64 bottomRight = this->sumAtPixel(x + width, y + height);
+    const qint64 topLeft = this->sumAtPixel(x, y);
+    const qint64 bottomLeft = this->sumAtPixel(x, y + height);
+    const qint64 topRight = this->sumAtPixel(x + width, y);
 
     return bottomRight + topLeft - (bottomLeft + topRight);
 }
@@ -153,22 +153,22 @@ void IntegralImage::loadFromFile(const QString &filename)
         qDebug() << "IntegralImage" << filename << "is not grayscale - will be converted";
 
     //Allocate memory for storing the sums
-    _bins = new quint64[qimage.width() * qimage.height()];
+    _bins = new qint64[qimage.width() * qimage.height()];
 
     //Loop through the image and build the sums
     for (int y = 0; y < qimage.height(); y++)
     {
-        quint64 rowSoFar = 0;
+        qint64 rowSoFar = 0;
 
         for (int x = 0; x < qimage.width(); x++)
         {
-            quint64 myVal = qGray(qimage.pixel(x,y));
+            qint64 myVal = qGray(qimage.pixel(x,y));
 
-            quint64 cellAboveCumulative = 0;
+            qint64 cellAboveCumulative = 0;
             if (y > 0)
                 cellAboveCumulative = this->sumAtPixel(x, y-1);
 
-            quint64 myCumulative = myVal + rowSoFar + cellAboveCumulative;
+            qint64 myCumulative = myVal + rowSoFar + cellAboveCumulative;
             this->setSumAtPixel(x,y,myCumulative);
 
             rowSoFar += myVal;
@@ -177,7 +177,7 @@ void IntegralImage::loadFromFile(const QString &filename)
 }
 
 //private
-void IntegralImage::setSumAtPixel(int x, int y, quint64 sum)
+void IntegralImage::setSumAtPixel(int x, int y, qint64 sum)
 {
     _bins[x + y*_width] = sum;
 }

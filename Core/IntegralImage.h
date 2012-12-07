@@ -42,8 +42,8 @@ public:
      * @param pos
      * @return
      */
-    quint64 sumAtPixel(const QPoint& pos) const;
-    quint64 sumAtPixel(int x, int y) const;
+    qint64 sumAtPixel(const QPoint& pos) const;
+    qint64 sumAtPixel(int x, int y) const;
 
     /**
      * @brief sumInArea Returns the sum of all pixels inside the given rectangle. Exclusive of the
@@ -51,19 +51,19 @@ public:
      * @param rect
      * @return
      */
-    quint64 sumInArea(const QRect& rect) const;
-    quint64 sumInArea(int x, int y, int width, int height) const;
+    qint64 sumInArea(const QRect& rect) const;
+    qint64 sumInArea(int x, int y, int width, int height) const;
 
     int width() const;
     int height() const;
 
 private:
     void loadFromFile(const QString& filename);
-    void setSumAtPixel(int x, int y, quint64 sum);
+    void setSumAtPixel(int x, int y, qint64 sum);
 
     //Member variables
     bool _isNull;
-    quint64 * _bins;
+    qint64 * _bins;
     int _width;
     int _height;
 };
