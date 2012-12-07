@@ -96,9 +96,15 @@ bool ClassifierChain::classify(const IntegralImage &image,
         return false;
     }
 
+    if (scale < 1.0)
+    {
+        qWarning() << "ClassifierChain can't classify with scale < 1.0";
+        return false;
+    }
+
     QPoint lowerRight(origin.x() + 24 * scale,
                       origin.y() + 24 * scale);
-    if (lowerRight.x() >= image.width() || lowerRight.y() >= image.height())
+    if (lowerRight.x() > image.width() || lowerRight.y() > image.height())
     {
         qWarning() << "ClassifierChain can't classify with an origin/scale that puts lowerRight beyond image bounds";
         return false;
