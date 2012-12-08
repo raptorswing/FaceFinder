@@ -78,8 +78,8 @@ void ClassifierChainTest::testBasics()
 void ClassifierChainTest::testClassification()
 {
 
-    IntegralImage goodImage(":/testImages/images/averageMaleFace24x24.png");
-    IntegralImage tooSmallImage(":/testImages/images/01.png");
+    IntegralImage goodImage(":/testImages/averageMaleFace24x24.png");
+    IntegralImage tooSmallImage(":/testImages/01.png");
 
     int destructionCounter = 0;
 

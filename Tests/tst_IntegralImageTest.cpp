@@ -13,7 +13,7 @@ IntegralImageTest::IntegralImageTest()
 //private slot
 void IntegralImageTest::testSumAtPixel1()
 {
-    IntegralImage img(":/testImages/images/01.png");
+    IntegralImage img(":/testImages/01.png");
 
     QVERIFY(img.sumAtPixel(4,4) == 9 * 255);
     QVERIFY(img.sumAtPixel(4,0) == 2 * 255);
@@ -25,7 +25,7 @@ void IntegralImageTest::testSumAtPixel1()
 //private slot
 void IntegralImageTest::testSumAtPixel2()
 {
-    IntegralImage img(":/testImages/images/02.png");
+    IntegralImage img(":/testImages/02.png");
 
     QVERIFY(img.sumAtPixel(23,23) == 24 * 24 * 255);
     QVERIFY(img.sumAtPixel(23,0) == 24 * 255);
@@ -37,7 +37,7 @@ void IntegralImageTest::testSumAtPixel2()
 //private slot
 void IntegralImageTest::testSumInArea1()
 {
-    IntegralImage img(":/testImages/images/01.png");
+    IntegralImage img(":/testImages/01.png");
 
     QVERIFY(img.sumInArea(0,0,0,0) == 0 * 255);
     QVERIFY(img.sumInArea(0,0,4,0) == 0 * 255);
@@ -52,7 +52,7 @@ void IntegralImageTest::testSumInArea1()
 //private slot
 void IntegralImageTest::testSumInArea2()
 {
-    IntegralImage img(":/testImages/images/02.png");
+    IntegralImage img(":/testImages/02.png");
 
     QVERIFY(img.sumInArea(0,0,0,0) == 0 * 255);
     QVERIFY(img.sumInArea(0,0,23,0) == 0 * 255);
@@ -65,7 +65,7 @@ void IntegralImageTest::testSumInArea2()
 //private slot
 void IntegralImageTest::testCopyConstructor()
 {
-    IntegralImage * test = new IntegralImage(":/testImages/images/01.png");
+    IntegralImage * test = new IntegralImage(":/testImages/01.png");
     IntegralImage test2(*test);
 
     QVERIFY(!test->isNull());
@@ -96,7 +96,7 @@ void IntegralImageTest::testCopyConstructor()
 //private slot
 void IntegralImageTest::testAssignmentOperator()
 {
-    IntegralImage * test = new IntegralImage(":/testImages/images/01.png");
+    IntegralImage * test = new IntegralImage(":/testImages/01.png");
     IntegralImage test2;
 
     QVERIFY(test2.isNull());
