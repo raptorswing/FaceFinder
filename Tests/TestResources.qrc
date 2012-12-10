@@ -6,5 +6,9 @@
         <file alias="averageMaleFace24x24.png">images/averageMaleFace24x24.png</file>
         <file alias="03.png">images/03.png</file>
         <file alias="04.png">images/04.png</file>
+        <file alias="05.png">images/05.png</file>
+        <file alias="06.png">images/06.png</file>
+        <file alias="07.png">images/07.png</file>
+        <file alias="08.png">images/08.png</file>
     </qresource>
 </RCC>
