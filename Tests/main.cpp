@@ -4,6 +4,7 @@
 
 #include "tst_IntegralImageTest.h"
 #include "tst_ClassifierChainTest.h"
+#include "tst_TwoRectFeatureTest.h"
 
 int main(int argc, char** argv)
 {
@@ -17,6 +18,11 @@ int main(int argc, char** argv)
 
     {
         ClassifierChainTest test;
+        QTest::qExec(&test);
+    }
+
+    {
+        TwoRectFeatureTest test;
         QTest::qExec(&test);
     }
 

@@ -17,7 +17,8 @@ TEMPLATE = app
 
 SOURCES += tst_IntegralImageTest.cpp \
     main.cpp \
-    tst_ClassifierChainTest.cpp
+    tst_ClassifierChainTest.cpp \
+    tst_TwoRectFeatureTest.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 
@@ -38,4 +39,5 @@ RESOURCES += \
 
 HEADERS += \
     tst_IntegralImageTest.h \
-    tst_ClassifierChainTest.h
+    tst_ClassifierChainTest.h \
+    tst_TwoRectFeatureTest.h
