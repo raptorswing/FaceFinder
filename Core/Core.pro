@@ -15,14 +15,16 @@ SOURCES += IntegralImage.cpp \
     Classifier.cpp \
     SimpleClassifier.cpp \
     Feature.cpp \
-    TwoRectFeature.cpp
+    TwoRectFeature.cpp \
+    ThreeRectFeature.cpp
 
 HEADERS += IntegralImage.h \
     ClassifierChain.h \
     Classifier.h \
     SimpleClassifier.h \
     Feature.h \
-    TwoRectFeature.h
+    TwoRectFeature.h \
+    ThreeRectFeature.h
 unix:!symbian {
     maemo5 {
         target.path = /opt/usr/lib
