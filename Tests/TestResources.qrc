@@ -10,5 +10,6 @@
         <file alias="06.png">images/06.png</file>
         <file alias="07.png">images/07.png</file>
         <file alias="08.png">images/08.png</file>
+        <file alias="09.png">images/09.png</file>
     </qresource>
 </RCC>
