@@ -12,11 +12,15 @@ CONFIG += staticlib
 
 SOURCES += IntegralImage.cpp \
     ClassifierChain.cpp \
-    Classifier.cpp
+    Classifier.cpp \
+    SimpleClassifier.cpp \
+    Feature.cpp
 
 HEADERS += IntegralImage.h \
     ClassifierChain.h \
-    Classifier.h
+    Classifier.h \
+    SimpleClassifier.h \
+    Feature.h
 unix:!symbian {
     maemo5 {
         target.path = /opt/usr/lib
