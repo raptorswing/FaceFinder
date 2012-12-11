@@ -39,8 +39,10 @@ public:
     void setFeature(const QSharedPointer<Feature>& nFeat);
 
     int polarity() const;
+    void setPolarity(int nPol);
 
     qint64 threshold() const;
+    void setThreshold(qint64 nThresh);
 
 
 private:

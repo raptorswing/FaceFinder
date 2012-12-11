@@ -17,7 +17,9 @@ SOURCES += IntegralImage.cpp \
     Feature.cpp \
     TwoRectFeature.cpp \
     ThreeRectFeature.cpp \
-    FourRectFeature.cpp
+    FourRectFeature.cpp \
+    Trainer.cpp \
+    StrongClassifier.cpp
 
 HEADERS += IntegralImage.h \
     ClassifierChain.h \
@@ -26,7 +28,9 @@ HEADERS += IntegralImage.h \
     Feature.h \
     TwoRectFeature.h \
     ThreeRectFeature.h \
-    FourRectFeature.h
+    FourRectFeature.h \
+    Trainer.h \
+    StrongClassifier.h
 unix:!symbian {
     maemo5 {
         target.path = /opt/usr/lib

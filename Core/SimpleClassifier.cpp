@@ -9,13 +9,7 @@ template <typename T> int sgn(T val) {
 SimpleClassifier::SimpleClassifier(const QSharedPointer<Feature> &feat, int polarity, qint64 threshold) :
     _feature(feat), _threshold(threshold)
 {
-    _polarity = sgn<int>(polarity);
-
-    if (_polarity == 0)
-    {
-        qWarning() << "SimpleClassifier given polarity of 0. Must be -1 or 1. Assuming 1.";
-        _polarity = 1;
-    }
+    this->setPolarity(polarity);
 
     if (_feature.isNull())
         qWarning() << "SimpleClassifier given null feature pointer. Will always classify \"false\" in this case";
@@ -81,7 +75,23 @@ int SimpleClassifier::polarity() const
     return _polarity;
 }
 
+void SimpleClassifier::setPolarity(int nPol)
+{
+    _polarity = sgn<int>(nPol);
+
+    if (_polarity == 0)
+    {
+        qWarning() << "SimpleClassifier given polarity of 0. Must be -1 or 1. Assuming 1.";
+        _polarity = 1;
+    }
+}
+
 qint64 SimpleClassifier::threshold() const
 {
     return _threshold;
+}
+
+void SimpleClassifier::setThreshold(qint64 nThresh)
+{
+    _threshold = nThresh;
 }
