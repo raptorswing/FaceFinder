@@ -6,6 +6,7 @@
 #include "tst_ClassifierChainTest.h"
 #include "tst_TwoRectFeatureTest.h"
 #include "tst_ThreeRectFeatureTest.h"
+#include "tst_FourRectFeatureTest.h"
 
 int main(int argc, char** argv)
 {
@@ -29,6 +30,11 @@ int main(int argc, char** argv)
 
     {
         ThreeRectFeatureTest test;
+        QTest::qExec(&test);
+    }
+
+    {
+        FourRectFeatureTest test;
         QTest::qExec(&test);
     }
 

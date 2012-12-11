@@ -19,7 +19,8 @@ SOURCES += tst_IntegralImageTest.cpp \
     main.cpp \
     tst_ClassifierChainTest.cpp \
     tst_TwoRectFeatureTest.cpp \
-    tst_ThreeRectFeatureTest.cpp
+    tst_ThreeRectFeatureTest.cpp \
+    tst_FourRectFeatureTest.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 
@@ -42,4 +43,5 @@ HEADERS += \
     tst_IntegralImageTest.h \
     tst_ClassifierChainTest.h \
     tst_TwoRectFeatureTest.h \
-    tst_ThreeRectFeatureTest.h
+    tst_ThreeRectFeatureTest.h \
+    tst_FourRectFeatureTest.h
