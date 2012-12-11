@@ -15,6 +15,13 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     
+private slots:
+    void on_positiveBrowseButton_clicked();
+
+    void on_negativeBrowseButton_clicked();
+
+    void on_trainButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
