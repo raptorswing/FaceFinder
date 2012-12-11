@@ -65,6 +65,17 @@ const QSharedPointer<Feature> &SimpleClassifier::feature() const
     return _feature;
 }
 
+void SimpleClassifier::setFeature(const QSharedPointer<Feature> &nFeat)
+{
+    if (nFeat.isNull())
+    {
+        qWarning() << "SimpleClassifier setFeature given null feature. Will not set.";
+        return;
+    }
+
+    _feature = nFeat;
+}
+
 int SimpleClassifier::polarity() const
 {
     return _polarity;

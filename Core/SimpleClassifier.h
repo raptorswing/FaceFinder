@@ -36,6 +36,7 @@ public:
                               qreal scale);
 
     const QSharedPointer<Feature>& feature() const;
+    void setFeature(const QSharedPointer<Feature>& nFeat);
 
     int polarity() const;
 
