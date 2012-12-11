@@ -48,6 +48,13 @@ qint64 FourRectFeature::evaluate(const IntegralImage &image, const QPoint &origi
     return sumR1 + sumR4 - sumR2 - sumR3;
 }
 
+QString FourRectFeature::toString() const
+{
+    QString toRet = "FourRect ";
+    toRet += QString::number(_rect.left()) + "," + QString::number(_rect.top()) + " - " + QString::number(_rect.width()) + "x" + QString::number(_rect.height());
+    return toRet;
+}
+
 const QRect &FourRectFeature::rect() const
 {
     return _rect;

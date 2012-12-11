@@ -17,3 +17,8 @@ qint64 Feature::evaluate(const IntegralImage &image, const QPoint &origin, qreal
     //Base feature returns zero. I could have made it pure-virtual instead.
     return 0;
 }
+
+QString Feature::toString() const
+{
+    return "Generic Feature";
+}

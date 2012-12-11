@@ -40,6 +40,18 @@ qint64 TwoRectFeature::evaluate(const IntegralImage &image, const QPoint &origin
     return r1Sum - r2Sum;
 }
 
+//Virtual from Feature
+QString TwoRectFeature::toString() const
+{
+    QString toRet = "TwoRect ";
+    if (_orientation == HorizontalOrientation)
+        toRet += "Horizontal ";
+    else
+        toRet += "Vertical ";
+    toRet += QString::number(_rect.left()) + "," + QString::number(_rect.top()) + " - " + QString::number(_rect.width()) + "x" + QString::number(_rect.height());
+    return toRet;
+}
+
 const QRect &TwoRectFeature::rect() const
 {
     return _rect;

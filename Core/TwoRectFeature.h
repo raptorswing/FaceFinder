@@ -21,6 +21,9 @@ public:
                             const QPoint& origin,
                             qreal scale);
 
+    //Virtual from Feature
+    virtual QString toString() const;
+
     const QRect& rect() const;
 
     TwoRectOrientation orientation() const;
