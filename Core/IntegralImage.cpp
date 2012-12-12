@@ -149,9 +149,6 @@ void IntegralImage::loadFromFile(const QString &filename)
     _height = qimage.height();
     _isNull = false;
 
-    if (!qimage.isGrayscale())
-        qDebug() << "IntegralImage" << filename << "is not grayscale - will be converted";
-
     //Allocate memory for storing the sums
     _bins = new qint64[qimage.width() * qimage.height()];
 
