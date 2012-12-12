@@ -7,6 +7,7 @@
 #include "tst_TwoRectFeatureTest.h"
 #include "tst_ThreeRectFeatureTest.h"
 #include "tst_FourRectFeatureTest.h"
+#include "tst_TestTrainer.h"
 
 int main(int argc, char** argv)
 {
@@ -35,6 +36,11 @@ int main(int argc, char** argv)
 
     {
         FourRectFeatureTest test;
+        QTest::qExec(&test);
+    }
+
+    {
+        TestTrainer test;
         QTest::qExec(&test);
     }
 

@@ -6,13 +6,13 @@
 #include <QtDebug>
 
 //for use in tests
-class TestClassifier : public Classifier
+class DestructionClassifier : public Classifier
 {
 public:
-    TestClassifier(int * destructionCounter) : _destructionCounter(destructionCounter)
+    DestructionClassifier(int * destructionCounter) : _destructionCounter(destructionCounter)
     {}
 
-    ~TestClassifier()
+    ~DestructionClassifier()
     {
         (*_destructionCounter)++;
     }
@@ -48,7 +48,7 @@ void ClassifierChainTest::testBasics()
     //Size should be five after appending five classifiers
     for (int i = 0; i < 5; i++)
     {
-        Classifier * testClassifier = new TestClassifier(&destructionCounter);
+        Classifier * testClassifier = new DestructionClassifier(&destructionCounter);
         QVERIFY(chain.appendClassifier(testClassifier));
     }
     QVERIFY(chain.size() == 5);
@@ -97,7 +97,7 @@ void ClassifierChainTest::testClassification()
 
     //Add some of the TestClassifiers which always return true
     for (int i = 0; i < 5; i++)
-        chain.appendClassifier(new TestClassifier(&destructionCounter));
+        chain.appendClassifier(new DestructionClassifier(&destructionCounter));
 
     //Should return true on good image
     QVERIFY(chain.classify(goodImage, QPoint(0,0), 1.0));
