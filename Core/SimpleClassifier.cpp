@@ -10,9 +10,6 @@ SimpleClassifier::SimpleClassifier(const QSharedPointer<Feature> &feat, int pola
     _feature(feat), _threshold(threshold)
 {
     this->setPolarity(polarity);
-
-    if (_feature.isNull())
-        qWarning() << "SimpleClassifier given null feature pointer. Will always classify \"false\" in this case";
 }
 
 SimpleClassifier::~SimpleClassifier()
@@ -44,7 +41,10 @@ SimpleClassifier &SimpleClassifier::operator =(const SimpleClassifier &other)
 bool SimpleClassifier::classify(const IntegralImage &image, const QPoint &origin, qreal scale)
 {
     if (_feature.isNull())
+    {
+        qWarning() << "SimpleClassifier cannot classify with null feature!";
         return false;
+    }
 
     int p = this->polarity();
 

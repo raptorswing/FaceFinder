@@ -11,6 +11,8 @@
 #include "SimpleClassifier.h"
 #include "StrongClassifier.h"
 
+class TestTrainer;
+
 class Trainer
 {
 public:
@@ -22,7 +24,7 @@ public:
 
     QSharedPointer<ClassifierChain> train();
 
-
+    friend class TestTrainer;
 private:
     StrongClassifier *adaboostTrain(int numFeatures,
                                const QList<IntegralImage>& positives,

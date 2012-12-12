@@ -22,6 +22,8 @@ public:
     qreal alphaThresh() const;
     void setAlphaThresh(qreal nAlpha);
 
+    const QList<SimpleClassifier *>& classifiers() const;
+
 private:
     QList<SimpleClassifier *> _classifiers;
     QList<qreal> _alphaWeights;

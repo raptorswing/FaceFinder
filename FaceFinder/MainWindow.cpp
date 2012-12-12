@@ -7,11 +7,10 @@
 #include <QDir>
 #include <QMessageBox>
 
-#include "IntegralImage.h"
-#include "Trainer.h"
 
 const QString CONFIG_LAST_POS_DIR = "lastPositiveDir";
 const QString CONFIG_LAST_NEG_DIR = "lastNegativeDir";
+const QString CONFIG_LAST_TEST_DIR = "lastTestDir";
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -125,5 +124,48 @@ void MainWindow::on_trainButton_clicked()
                     0.1,
                     positives,
                     negatives);
-    QSharedPointer<ClassifierChain> chain = trainer.train();
+    _chain = trainer.train();
+}
+
+//private slot
+void MainWindow::on_testFileBrowseButton_clicked()
+{
+    QSettings settings;
+    QString lastTest;
+    if (settings.contains(CONFIG_LAST_TEST_DIR))
+        lastTest = settings.value(CONFIG_LAST_TEST_DIR).toString();
+
+    QString file = QFileDialog::getOpenFileName(this, "Select file to test", lastTest);
+
+    if (file.isEmpty() || file.isNull())
+        return;
+
+    settings.setValue(CONFIG_LAST_TEST_DIR, file);
+
+    this->ui->testFilePathEdit->setText(file);
+}
+
+//private slot
+void MainWindow::on_testButton_clicked()
+{
+    IntegralImage imgToTest(this->ui->testFilePathEdit->text());
+
+    if (_chain.isNull())
+        return;
+    else if (imgToTest.isNull())
+    {
+        QString error = "Failed to open image to test.";
+        qWarning() << error;
+        QMessageBox::warning(this, "Error", error);
+        return;
+    }
+
+    QString message;
+    if (_chain->classify(imgToTest, QPoint(0,0), 1.0))
+        message = "That is a face!";
+    else
+        message = "Tha is NOT a face.";
+    QMessageBox::information(this,
+                             "Results",
+                             message);
 }

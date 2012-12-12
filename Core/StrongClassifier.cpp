@@ -59,5 +59,11 @@ qreal StrongClassifier::alphaThresh() const
 
 void StrongClassifier::setAlphaThresh(qreal nAlpha)
 {
+    qDebug() << "New aThresh" << nAlpha;
     _alphaThresh = nAlpha;
+}
+
+const QList<SimpleClassifier *> &StrongClassifier::classifiers() const
+{
+    return _classifiers;
 }

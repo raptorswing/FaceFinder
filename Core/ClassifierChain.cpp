@@ -110,11 +110,21 @@ bool ClassifierChain::classify(const IntegralImage &image,
         return false;
     }
 
+    if (_classifiers.size() <= 0)
+    {
+        qWarning() << "ClassifierChain is emtpy. Returning false";
+        return false;
+    }
+
     //Try the image on the whole chain as long as it passes the predecessors
+    int count = 0;
     foreach(Classifier * classifier, _classifiers)
     {
         if (!classifier->classify(image, origin, scale))
+        {
             return false;
+        }
+        count++;
     }
 
     return true;
