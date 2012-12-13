@@ -14,6 +14,7 @@ public:
 private Q_SLOTS:
     void testBasics();
     void testClassification();
+    void testSerialize();
     
 };
 

@@ -13,6 +13,7 @@
 const QString CONFIG_LAST_POS_DIR = "lastPositiveDir";
 const QString CONFIG_LAST_NEG_DIR = "lastNegativeDir";
 const QString CONFIG_LAST_TEST_DIR = "lastTestDir";
+const QString CONFIG_LAST_SERIALIZE_DIR = "lastSerializeDir";
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -121,9 +122,9 @@ void MainWindow::on_trainButton_clicked()
 
     qDebug() << positives.size() << "positive examples." << negatives.size() << "negative examples";
 
-    Trainer trainer(0.80,
-                    0.90,
-                    0.001,
+    Trainer trainer(this->ui->maxFalsePositivePerLayer->value(),
+                    this->ui->minTruePositivePerLayer->value(),
+                    this->ui->maxOverallFalsePositive->value(),
                     positives,
                     negatives);
     _chain = trainer.train();
@@ -190,4 +191,54 @@ void MainWindow::on_testButton_clicked()
     displayer->setAttribute(Qt::WA_DeleteOnClose);
     displayer->setPixmap(QPixmap::fromImage(originalImage));
     displayer->show();
+}
+
+//private slot
+void MainWindow::on_actionLoad_classifier_triggered()
+{
+    QSettings settings;
+    QString lastSerialize;
+    if (settings.contains(CONFIG_LAST_SERIALIZE_DIR))
+        lastSerialize = settings.value(CONFIG_LAST_SERIALIZE_DIR).toString();
+
+    QString loadFilename = QFileDialog::getOpenFileName(this,
+                                                        "Select classifier file",
+                                                        lastSerialize);
+    if (loadFilename.isEmpty())
+        return;
+
+    settings.setValue(CONFIG_LAST_SERIALIZE_DIR, loadFilename);
+
+    QFile fp(loadFilename);
+    fp.open(QFile::ReadOnly);
+    QByteArray data = fp.readAll();
+    fp.close();
+
+    _chain = QSharedPointer<ClassifierChain>(ClassifierChain::fromBytes(data));
+}
+
+//private slot
+void MainWindow::on_actionSave_classifier_triggered()
+{
+    if (_chain.isNull())
+        return;
+    QByteArray bytes = _chain->toBytes();
+
+    QSettings settings;
+    QString lastSerialize;
+    if (settings.contains(CONFIG_LAST_SERIALIZE_DIR))
+        lastSerialize = settings.value(CONFIG_LAST_SERIALIZE_DIR).toString();
+
+    QString destFilename = QFileDialog::getSaveFileName(this,
+                                                        "Select save destination",
+                                                        lastSerialize);
+    if (destFilename.isEmpty())
+        return;
+
+    settings.setValue(CONFIG_LAST_SERIALIZE_DIR, destFilename);
+
+    QFile fp(destFilename);
+    fp.open(QFile::ReadWrite);
+    fp.write(bytes);
+    fp.close();
 }

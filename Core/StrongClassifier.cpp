@@ -67,3 +67,8 @@ const QList<SimpleClassifier *> &StrongClassifier::classifiers() const
 {
     return _classifiers;
 }
+
+const QList<qreal> &StrongClassifier::alphaWeights() const
+{
+    return _alphaWeights;
+}

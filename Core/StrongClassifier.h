@@ -23,6 +23,7 @@ public:
     void setAlphaThresh(qreal nAlpha);
 
     const QList<SimpleClassifier *>& classifiers() const;
+    const QList<qreal>& alphaWeights() const;
 
 private:
     QList<SimpleClassifier *> _classifiers;

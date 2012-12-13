@@ -30,6 +30,10 @@ private slots:
 
     void on_testButton_clicked();
 
+    void on_actionLoad_classifier_triggered();
+
+    void on_actionSave_classifier_triggered();
+
 private:
     Ui::MainWindow *ui;
 

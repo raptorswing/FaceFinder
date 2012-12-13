@@ -44,11 +44,11 @@ qint64 TwoRectFeature::evaluate(const IntegralImage &image, const QPoint &origin
 QString TwoRectFeature::toString() const
 {
     QString toRet = "TwoRect ";
+    toRet += QString::number(_rect.left()) + " " + QString::number(_rect.top()) + " " + QString::number(_rect.width()) + " " + QString::number(_rect.height()) + " ";
     if (_orientation == HorizontalOrientation)
-        toRet += "Horizontal ";
+        toRet += "Horizontal";
     else
-        toRet += "Vertical ";
-    toRet += QString::number(_rect.left()) + "," + QString::number(_rect.top()) + " - " + QString::number(_rect.width()) + "x" + QString::number(_rect.height());
+        toRet += "Vertical";
     return toRet;
 }
 

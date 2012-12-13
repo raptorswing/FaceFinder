@@ -3,8 +3,10 @@
 
 #include "Classifier.h"
 #include "IntegralImage.h"
+#include "StrongClassifier.h"
 
 #include <QList>
+#include <QByteArray>
 
 /**
  * @brief The ClassifierChain class represents an ordered series of Classifier objects.
@@ -25,7 +27,7 @@ public:
      * @param nClass
      * @return
      */
-    bool appendClassifier(Classifier * nClass);
+    bool appendClassifier(StrongClassifier * nClass);
 
     /**
      * @brief insertClassifier inserts a Classifier at the given index. If the index is less than zero or greater
@@ -35,7 +37,7 @@ public:
      * @param nClass
      * @return
      */
-    bool insertClassifier(int index, Classifier * nClass);
+    bool insertClassifier(int index, StrongClassifier * nClass);
 
     /**
      * @brief removeClassifier removes the Classifier at the given index. The removed Classifier will be deleted.
@@ -63,7 +65,7 @@ public:
      * ClassifierChain
      * @return
      */
-    const QList<Classifier *>& classifiers() const;
+    const QList<StrongClassifier *>& classifiers() const;
 
     /**
      * @brief clear removes all Classifier objects from this ClassifierChain. They will all be deleted.
@@ -85,13 +87,18 @@ public:
                   const QPoint& origin,
                   qreal scale);
 
+    QByteArray toBytes() const;
+
+    static ClassifierChain * fromBytes(const QByteArray& bytes);
+
+
 private:
     ClassifierChain(const ClassifierChain& other);
 
     ClassifierChain& operator =(const ClassifierChain& other);
 
     //Member Variables
-    QList<Classifier *> _classifiers;
+    QList<StrongClassifier *> _classifiers;
 };
 
 #endif // CLASSIFIERCHAIN_H

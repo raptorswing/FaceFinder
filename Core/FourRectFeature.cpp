@@ -51,7 +51,7 @@ qint64 FourRectFeature::evaluate(const IntegralImage &image, const QPoint &origi
 QString FourRectFeature::toString() const
 {
     QString toRet = "FourRect ";
-    toRet += QString::number(_rect.left()) + "," + QString::number(_rect.top()) + " - " + QString::number(_rect.width()) + "x" + QString::number(_rect.height());
+    toRet += QString::number(_rect.left()) + " " + QString::number(_rect.top()) + " " + QString::number(_rect.width()) + " " + QString::number(_rect.height());
     return toRet;
 }
 

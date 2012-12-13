@@ -2,6 +2,10 @@
 
 #include <QtDebug>
 
+#include "TwoRectFeature.h"
+#include "ThreeRectFeature.h"
+#include "FourRectFeature.h"
+
 ClassifierChain::ClassifierChain()
 {
 }
@@ -11,7 +15,7 @@ ClassifierChain::~ClassifierChain()
     this->clear();
 }
 
-bool ClassifierChain::appendClassifier(Classifier *nClass)
+bool ClassifierChain::appendClassifier(StrongClassifier *nClass)
 {
     if (nClass == 0)
     {
@@ -23,7 +27,7 @@ bool ClassifierChain::appendClassifier(Classifier *nClass)
     return true;
 }
 
-bool ClassifierChain::insertClassifier(int index, Classifier *nClass)
+bool ClassifierChain::insertClassifier(int index, StrongClassifier *nClass)
 {
     if (nClass == 0)
     {
@@ -49,7 +53,7 @@ bool ClassifierChain::removeClassifier(int index)
         return false;
     }
 
-    Classifier * toDel = _classifiers[index];
+    StrongClassifier * toDel = _classifiers[index];
     delete toDel;
 
     _classifiers.removeAt(index);
@@ -67,7 +71,7 @@ bool ClassifierChain::isEmpty() const
     return _classifiers.isEmpty();
 }
 
-const QList<Classifier *> &ClassifierChain::classifiers() const
+const QList<StrongClassifier *> &ClassifierChain::classifiers() const
 {
     return _classifiers;
 }
@@ -75,7 +79,7 @@ const QList<Classifier *> &ClassifierChain::classifiers() const
 void ClassifierChain::clear()
 {
     //Delete all classifiers and clear the list!
-    foreach(Classifier * classifier, _classifiers)
+    foreach(StrongClassifier * classifier, _classifiers)
         delete classifier;
     _classifiers.clear();
 }
@@ -118,7 +122,7 @@ bool ClassifierChain::classify(const IntegralImage &image,
 
     //Try the image on the whole chain as long as it passes the predecessors
     int count = 0;
-    foreach(Classifier * classifier, _classifiers)
+    foreach(StrongClassifier * classifier, _classifiers)
     {
         if (!classifier->classify(image, origin, scale))
         {
@@ -128,6 +132,124 @@ bool ClassifierChain::classify(const IntegralImage &image,
     }
 
     return true;
+}
+
+QByteArray ClassifierChain::toBytes() const
+{
+    QByteArray toRet;
+
+    foreach(StrongClassifier * classifier, _classifiers)
+    {
+        toRet.append("StrongClassifier\r\n");
+        toRet.append("AlphaThresh " + QString::number(classifier->alphaThresh(),'g',12) + "\r\n");
+
+        const QList<qreal>& alphaWeights = classifier->alphaWeights();
+        const QList<SimpleClassifier *>& simples = classifier->classifiers();
+
+        for (int i = 0; i < alphaWeights.size(); i++)
+            toRet.append("Alpha " + QString::number(alphaWeights[i],'g',12) + "\r\n");
+
+        for (int i = 0; i < simples.size(); i++)
+        {
+            SimpleClassifier * simple = simples[i];
+            toRet.append("Simple " + QString::number(simple->polarity()) + " " + QString::number(simple->threshold()) + " " + simple->feature()->toString() + " " + "\r\n");
+        }
+    }
+
+
+    return toRet;
+}
+
+ClassifierChain *ClassifierChain::fromBytes(const QByteArray &bytes)
+{
+    QList<QByteArray> lines = bytes.split('\n');
+
+    ClassifierChain * work = new ClassifierChain();
+
+    QList<qreal> tempAlphas;
+    QList<SimpleClassifier *> tempSimples;
+
+    StrongClassifier * current = 0;
+    for (int l = 0; l < lines.size(); l++)
+    {
+        QByteArray line = lines[l];
+        line.replace(QString("\r"), "");
+
+        QList<QByteArray> parts = line.split(' ');
+        if (parts.size() == 0)
+            continue;
+
+        if (parts[0] == "StrongClassifier")
+        {
+            if (current != 0)
+            {
+                for (int i = 0; i < tempAlphas.size(); i++)
+                    current->appendClassifier(tempSimples[i], tempAlphas[i]);
+                work->appendClassifier(current);
+                tempAlphas.clear();
+                tempSimples.clear();
+            }
+            current = new StrongClassifier();
+        }
+        else if (parts[0] == "AlphaThresh")
+        {
+            qreal alphaThresh = parts[1].toDouble();
+            current->setAlphaThresh(alphaThresh);
+        }
+        else if (parts[0] == "Alpha")
+        {
+            qreal alpha = parts[1].toDouble();
+            tempAlphas.append(alpha);
+        }
+        else if (parts[0] == "Simple")
+        {
+            SimpleClassifier * simple = new SimpleClassifier(QSharedPointer<Feature>(), 1, 1);
+
+            int polarity = parts[1].toInt();
+            qint64 threshold = parts[2].toLongLong();
+
+
+            int x = parts[4].toInt();
+            int y = parts[5].toInt();
+            int w = parts[6].toInt();
+            int h = parts[7].toInt();
+            QRect rect(x,y,w,h);
+
+            QSharedPointer<Feature> feat;
+            if (parts[3] == "TwoRect")
+            {
+                TwoRectFeature::TwoRectOrientation orientation = TwoRectFeature::VerticalOrientation;
+                if (parts[8] == "Horizontal")
+                    orientation = TwoRectFeature::HorizontalOrientation;
+                feat = QSharedPointer<Feature>(new TwoRectFeature(rect, orientation));
+            }
+            else if (parts[3] == "ThreeRect")
+            {
+                ThreeRectFeature::ThreeRectOrientation orientation = ThreeRectFeature::VerticalOrientation;
+                if (parts[8] == "Horizontal")
+                    orientation = ThreeRectFeature::VerticalOrientation;
+                feat = QSharedPointer<Feature>(new ThreeRectFeature(rect, orientation));
+            }
+            else
+                feat = QSharedPointer<Feature>(new FourRectFeature(rect));
+
+            simple->setFeature(feat);
+            simple->setPolarity(polarity);
+            simple->setThreshold(threshold);
+
+            tempSimples.append(simple);
+        }
+    }
+
+    if (current != 0)
+    {
+        for (int i = 0; i < tempAlphas.size(); i++)
+            current->appendClassifier(tempSimples[i], tempAlphas[i]);
+        work->appendClassifier(current);
+    }
+
+
+    return work;
 }
 
 //private to prevent inadvertent use
