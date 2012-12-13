@@ -29,7 +29,7 @@ Trainer::Trainer(qreal maxFalsePositiveRatePerLayer,
     qsrand(50);
 
     //Put some of our training data aside for validation purposes...
-    const qreal percentage = 0.3;
+    const qreal percentage = 0.5;
 
     const int numPos = _P.size() * percentage;
     const int numNeg = _N.size() * percentage;
