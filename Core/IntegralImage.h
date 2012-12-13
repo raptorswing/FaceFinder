@@ -19,6 +19,8 @@ public:
      */
     IntegralImage(const QString& filename);
 
+    IntegralImage(const QImage& image);
+
     //Copy constructor. All data is copied.
     IntegralImage(const IntegralImage& other);
 
@@ -59,6 +61,7 @@ public:
 
 private:
     void loadFromFile(const QString& filename);
+    void loadFromImage(const QImage& qimage);
     void setSumAtPixel(int x, int y, qint64 sum);
 
     //Member variables

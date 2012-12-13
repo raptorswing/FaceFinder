@@ -15,6 +15,11 @@ IntegralImage::IntegralImage(const QString &filename) : _isNull(true), _bins(0),
     this->loadFromFile(filename);
 }
 
+IntegralImage::IntegralImage(const QImage &image) : _isNull(true), _bins(0), _width(0), _height(0)
+{
+    this->loadFromImage(image);
+}
+
 IntegralImage::IntegralImage(const IntegralImage &other) : _isNull(true), _bins(0), _width(0), _height(0)
 {
     if (!other.isNull())
@@ -139,9 +144,14 @@ int IntegralImage::height() const
 void IntegralImage::loadFromFile(const QString &filename)
 {
     QImage qimage(filename);
+    this->loadFromImage(qimage);
+}
+
+void IntegralImage::loadFromImage(const QImage &qimage)
+{
     if (qimage.isNull())
     {
-        qWarning() << "IntegralImage given bad filename:" << filename;
+        qWarning() << "IntegralImage given bad QImage";
         return;
     }
 
