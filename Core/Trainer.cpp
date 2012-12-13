@@ -57,7 +57,8 @@ QSharedPointer<ClassifierChain> Trainer::train()
 
     int i = 0;
 
-    while (falsePositiveRateByLayer.last() > _goalF)
+    while (falsePositiveRateByLayer.last() > _goalF
+           && !N.isEmpty())
     {
         falsePositiveRateByLayer.append(falsePositiveRateByLayer[i]);
         truePositiveRateByLayer.append(truePositiveRateByLayer[i]);
@@ -65,7 +66,8 @@ QSharedPointer<ClassifierChain> Trainer::train()
         int numFeatures = 0;
 
         StrongClassifier * newLayer = 0;
-        while (falsePositiveRateByLayer[i] > _maxF * falsePositiveRateByLayer[i-1])
+        while (falsePositiveRateByLayer[i] > _maxF * falsePositiveRateByLayer[i-1]
+               && !N.isEmpty())
         {
             if (newLayer != 0)
                 toRet->removeClassifier(toRet->size()-1);
@@ -149,6 +151,9 @@ StrongClassifier *Trainer::adaboostTrain(int numFeatures,
                                          const QList<IntegralImage> &positives,
                                          const QList<IntegralImage> &negatives)
 {
+    Q_ASSERT(!positives.isEmpty());
+    Q_ASSERT(!negatives.isEmpty());
+
     if (numFeatures == 0)
         qWarning() << "Trainer training StrongClassifier with zero features... this is foolish";
 
