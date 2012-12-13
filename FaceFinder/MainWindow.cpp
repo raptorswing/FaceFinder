@@ -6,6 +6,8 @@
 #include <QtDebug>
 #include <QDir>
 #include <QMessageBox>
+#include <QPainter>
+#include <QLabel>
 
 
 const QString CONFIG_LAST_POS_DIR = "lastPositiveDir";
@@ -119,9 +121,9 @@ void MainWindow::on_trainButton_clicked()
 
     qDebug() << positives.size() << "positive examples." << negatives.size() << "negative examples";
 
-    Trainer trainer(0.4,
-                    0.9,
-                    0.1,
+    Trainer trainer(0.80,
+                    0.90,
+                    0.001,
                     positives,
                     negatives);
     _chain = trainer.train();
@@ -148,6 +150,7 @@ void MainWindow::on_testFileBrowseButton_clicked()
 //private slot
 void MainWindow::on_testButton_clicked()
 {
+    QImage originalImage(this->ui->testFilePathEdit->text());
     IntegralImage imgToTest(this->ui->testFilePathEdit->text());
 
     if (_chain.isNull())
@@ -160,12 +163,31 @@ void MainWindow::on_testButton_clicked()
         return;
     }
 
-    QString message;
-    if (_chain->classify(imgToTest, QPoint(0,0), 1.0))
-        message = "That is a face!";
-    else
-        message = "Tha is NOT a face.";
-    QMessageBox::information(this,
-                             "Results",
-                             message);
+    QPainter painter(&originalImage);
+
+    //Move over all viable origins of the test image
+    for (int y = 0; y < imgToTest.width() - 23; y+=8)
+    {
+        for (int x = 0; x < imgToTest.height() - 23; x+=8)
+        {
+            //Try every scale that will work here
+            qreal scale = 1.0;
+            while (x + 24*scale < imgToTest.width()
+                   && y + 24*scale < imgToTest.height())
+            {
+                if (_chain->classify(imgToTest, QPoint(x,y), scale))
+                {
+                    painter.drawRect(x, y, 24*scale, 24*scale);
+                    qDebug() << "Found at" << x << y << "-" << 24*scale << "x" << 24*scale;
+                }
+
+                scale *= 1.25;
+            }
+        }
+    }
+
+    QLabel * displayer = new QLabel();
+    displayer->setAttribute(Qt::WA_DeleteOnClose);
+    displayer->setPixmap(QPixmap::fromImage(originalImage));
+    displayer->show();
 }

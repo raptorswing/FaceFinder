@@ -96,15 +96,25 @@ QSharedPointer<ClassifierChain> Trainer::train()
             int failCount = 0;
             while (truePositiveRateByLayer[i] < _goalD * truePositiveRateByLayer[i-1])
             {
-                foreach(SimpleClassifier * toAdjust, newLayer->classifiers())
+                //newLayer->setAlphaThresh(newLayer->alphaThresh() - qAbs<qreal>(newLayer->alphaThresh()*0.1));
+                for (int j = 0; j < numFeatures; j++)
                 {
-                    qint64 delta = qAbs<qint64>(toAdjust->threshold()) * 0.1 * toAdjust->polarity();
+                    this->testValidation(toRet, &Di, &Fi);
+                    truePositiveRateByLayer[i] = Di;
+                    falsePositiveRateByLayer[i] = Fi;
+                    if (truePositiveRateByLayer[i] >= _goalD * truePositiveRateByLayer[i-1])
+                        break;
+
+                    SimpleClassifier * toAdjust = newLayer->classifiers()[j];
+                    qint64 delta = qMax<qint64>(10,qAbs<qint64>(toAdjust->threshold()) * 0.1) * toAdjust->polarity();
                     toAdjust->setThreshold(toAdjust->threshold() + delta);
                 }
+
                 this->testValidation(toRet, &Di, &Fi);
-                qDebug() << "Layer" << i << "D:" << Di << " F:" << Fi;
                 truePositiveRateByLayer[i] = Di;
                 falsePositiveRateByLayer[i] = Fi;
+
+                qDebug() << "Layer" << i << "D:" << Di << " F:" << Fi;
 
                 if (failCount++ == 100)
                 {
