@@ -18,7 +18,8 @@ Trainer::Trainer(qreal maxFalsePositiveRatePerLayer,
                  qreal minTruePositiveRatePerLayer,
                  qreal overallFalsePositiveTarget,
                  const QList<IntegralImage>& positives,
-                 const QList<IntegralImage>& negatives) :
+                 const QList<IntegralImage>& negatives,
+                 qreal validationSetPortion) :
     _maxF(maxFalsePositiveRatePerLayer),
     _goalD(minTruePositiveRatePerLayer),
     _goalF(overallFalsePositiveTarget),
@@ -29,7 +30,7 @@ Trainer::Trainer(qreal maxFalsePositiveRatePerLayer,
     qsrand(50);
 
     //Put some of our training data aside for validation purposes...
-    const qreal percentage = 0.5;
+    const qreal percentage = validationSetPortion;
 
     const int numPos = _P.size() * percentage;
     const int numNeg = _N.size() * percentage;

@@ -126,7 +126,8 @@ void MainWindow::on_trainButton_clicked()
                     this->ui->minTruePositivePerLayer->value(),
                     this->ui->maxOverallFalsePositive->value(),
                     positives,
-                    negatives);
+                    negatives,
+                    this->ui->validationSetPortion->value());
     _chain = trainer.train();
 }
 

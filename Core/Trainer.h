@@ -20,7 +20,8 @@ public:
             qreal minTruePositiveRatePerLayer,
             qreal overallFalsePositiveTarget,
             const QList<IntegralImage>& positives,
-            const QList<IntegralImage>& negatives);
+            const QList<IntegralImage>& negatives,
+            qreal validationSetPortion = 0.3);
 
     QSharedPointer<ClassifierChain> train();
 
