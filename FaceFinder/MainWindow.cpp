@@ -167,25 +167,31 @@ void MainWindow::on_testButton_clicked()
     QPainter painter(&originalImage);
 
     //Move over all viable origins of the test image
+    bool foundAtleastOne = false;
     for (int y = 0; y < imgToTest.width() - 23; y+=8)
     {
         for (int x = 0; x < imgToTest.height() - 23; x+=8)
         {
             //Try every scale that will work here
             qreal scale = 1.0;
-            while (x + 24*scale < imgToTest.width()
-                   && y + 24*scale < imgToTest.height())
+            while (x + 24*scale <= imgToTest.width()
+                   && y + 24*scale <= imgToTest.height())
             {
                 if (_chain->classify(imgToTest, QPoint(x,y), scale))
                 {
-                    painter.drawRect(x, y, 24*scale, 24*scale);
+                    //painter.drawRect(x, y, 24*scale, 24*scale);
+                    painter.fillRect(x, y, 24*scale, 24*scale, QColor(255,0,0,30));
                     qDebug() << "Found at" << x << y << "-" << 24*scale << "x" << 24*scale;
+                    foundAtleastOne = true;
                 }
 
                 scale *= 1.25;
             }
         }
     }
+
+    if (!foundAtleastOne)
+        qDebug() << "Found no faces in this test";
 
     QLabel * displayer = new QLabel();
     displayer->setAttribute(Qt::WA_DeleteOnClose);
